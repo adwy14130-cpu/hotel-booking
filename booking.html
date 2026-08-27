@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>حجز فنادق مكة المكرمة والمدينة المنورة</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tahoma', sans-serif; }
+  body {
+    background: linear-gradient(135deg, #0f4c3a 0%, #1a7a5c 100%);
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .container {
+    background: #fff;
+    width: 100%;
+    max-width: 600px;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .header {
+    background: linear-gradient(135deg, #0f4c3a, #d4af37);
+    color: #fff;
+    padding: 30px 20px;
+    text-align: center;
+  }
+  .header h1 { font-size: 24px; margin-bottom: 10px; }
+  .header p { font-size: 15px; opacity: 0.95; }
+  form { padding: 25px; }
+  .form-group { margin-bottom: 18px; }
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #0f4c3a;
+    font-size: 14px;
+  }
+  input, select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: border 0.3s;
+  }
+  input:focus, select:focus {
+    outline: none;
+    border-color: #d4af37;
+  }
+  .row { display: flex; gap: 12px; }
+  .row .form-group { flex: 1; }
+  .btn {
+    width: 100%;
+    padding: 15px;
+    background: #25D366;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s;
+  }
+  .btn:hover { background: #1da851; }
+  .note {
+    background: #fff8e1;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #7a5d00;
+    text-align: center;
+    margin-top: 15px;
+  }
+  @media (max-width: 500px) {
+    .row { flex-direction: column; gap: 0; }
+    .header h1 { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🕋 حجز فنادق مكة المكرمة والمدينة المنورة</h1>
+      <p>املأ البيانات التالية وسنتواصل معك لتأكيد الحجز</p>
+    </div>
+    <form id="bookingForm">
+      <div class="form-group">
+        <label>الاسم بالكامل *</label>
+        <input type="text" id="name" required placeholder="مثال: أحمد محمد علي">
+      </div>
+
+      <div class="form-group">
+        <label>رقم الهاتف (واتساب) *</label>
+        <input type="tel" id="phone" required placeholder="مثال: 00201000000000">
+      </div>
+
+      <div class="form-group">
+        <label>الجنسية *</label>
+        <input type="text" id="nationality" required placeholder="مثال: مصري">
+      </div>
+
+      <div class="row">
+        <div class="form-group">
+          <label>تاريخ الدخول *</label>
+          <input type="date" id="checkIn" required>
+        </div>
+        <div class="form-group">
+          <label>تاريخ الخروج *</label>
+          <input type="date" id="checkOut" required>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group">
+          <label>عدد الغرف *</label>
+          <input type="number" id="rooms" min="1" value="1" required>
+        </div>
+        <div class="form-group">
+          <label>نوع الغرفة *</label>
+          <select id="roomType" required>
+            <option value="">اختر...</option>
+            <option value="فردية">فردية</option>
+            <option value="مزدوجة">مزدوجة</option>
+            <option value="ثلاثية">ثلاثية</option>
+            <option value="رباعية">رباعية</option>
+            <option value="جناح">جناح</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>اسم الفندق *</label>
+        <input type="text" id="hotel" required placeholder="مثال: فندق هيلتون مكة">
+      </div>
+
+      <button type="submit" class="btn">✅ تأكيد الإتاحة</button>
+
+      <div class="note">
+        ⚠️ بعد الضغط سيتم فتح واتساب لإرسال طلب الحجز مباشرة
+      </div>
+    </form>
+  </div>
+
+<script>
+  // ✅ رقم الواتساب اللي هيوصل عليه الطلبات
+  const WHATSAPP_NUMBER = "201285271241";
+
+  document.getElementById('bookingForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const data = {
+      name: document.getElementById('name').value,
+      phone: document.getElementById('phone').value,
+      nationality: document.getElementById('nationality').value,
+      checkIn: document.getElementById('checkIn').value,
+      checkOut: document.getElementById('checkOut').value,
+      rooms: document.getElementById('rooms').value,
+      roomType: document.getElementById('roomType').value,
+      hotel: document.getElementById('hotel').value
+    };
+
+    const message =
+`🕋 *طلب حجز جديد - فنادق مكة والمدينة*
+
+👤 *الاسم:* ${data.name}
+📞 *رقم الهاتف:* ${data.phone}
+ *الجنسية:* ${data.nationality}
+
+📅 *تاريخ الدخول:* ${data.checkIn}
+📅 *تاريخ الخروج:* ${data.checkOut}
+
+🛏️ *عدد الغرف:* ${data.rooms}
+🏨 *نوع الغرفة:* ${data.roomType}
+ *الفندق:* ${data.hotel}
+
+✨ برجاء تأكيد الإتاحة والسعر`;
+
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+  });
+</script>
+</body>
+</html>
