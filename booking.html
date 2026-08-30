@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>بيت الحبيب لحجز فنادق مكة المكرمة والمدينه المنورة </title>
+<title>بيت الحبيب ﷺ لحجز الفنادق</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tahoma', sans-serif; }
   body {
@@ -26,159 +26,303 @@
   .header {
     background: linear-gradient(135deg, #0f4c3a, #d4af37);
     color: #fff;
+    padding: 25px 20px;
+    text-align: center;
+  }
+  .header h1 { font-size: 22px; margin-bottom: 5px; }
+  .header h2 { font-size: 16px; font-weight: normal; opacity: 0.95; }
+  
+  .content { padding: 25px; }
+  
+  /* Home View Styles */
+  .city-cards { display: flex; gap: 15px; justify-content: center; margin-top: 20px; }
+  .city-card {
+    background: #f8f9fa;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
     padding: 30px 20px;
     text-align: center;
+    cursor: pointer;
+    flex: 1;
+    transition: all 0.3s;
   }
-  .header h1 { font-size: 24px; margin-bottom: 10px; }
-  .header p { font-size: 15px; opacity: 0.95; }
-  form { padding: 25px; }
+  .city-card:hover { border-color: #d4af37; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+  .city-card .icon { font-size: 40px; margin-bottom: 10px; display: block; }
+  .city-card .title { font-size: 18px; font-weight: bold; color: #0f4c3a; }
+
+  /* Hotels List Styles */
+  .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .back-btn { background: none; border: none; color: #0f4c3a; font-size: 16px; cursor: pointer; font-weight: bold; }
+  .add-hotel-btn {
+    background: #d4af37; color: #fff; border: none; padding: 8px 15px;
+    border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: bold;
+  }
+  .hotel-item {
+    background: #f8f9fa; border-right: 4px solid #0f4c3a;
+    padding: 15px; margin-bottom: 12px; border-radius: 8px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .hotel-info h3 { font-size: 16px; color: #0f4c3a; margin-bottom: 5px; }
+  .hotel-info p { font-size: 13px; color: #666; }
+  .book-btn {
+    background: #25D366; color: #fff; border: none; padding: 8px 15px;
+    border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold;
+  }
+
+  /* Form Styles */
   .form-group { margin-bottom: 18px; }
-  label {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: bold;
-    color: #0f4c3a;
-    font-size: 14px;
-  }
+  label { display: block; margin-bottom: 6px; font-weight: bold; color: #0f4c3a; font-size: 14px; }
   input, select {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 15px;
-    transition: border 0.3s;
+    width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px;
+    font-size: 15px; transition: border 0.3s;
   }
-  input:focus, select:focus {
-    outline: none;
-    border-color: #d4af37;
-  }
+  input:focus, select:focus { outline: none; border-color: #d4af37; }
   .row { display: flex; gap: 12px; }
   .row .form-group { flex: 1; }
-  .btn {
-    width: 100%;
-    padding: 15px;
-    background: #25D366;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 17px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background 0.3s;
+  .submit-btn {
+    width: 100%; padding: 15px; background: #25D366; color: #fff;
+    border: none; border-radius: 8px; font-size: 17px; font-weight: bold;
+    cursor: pointer; margin-top: 10px;
   }
-  .btn:hover { background: #1da851; }
   .note {
-    background: #fff8e1;
-    padding: 10px;
-    border-radius: 8px;
-    font-size: 13px;
-    color: #7a5d00;
-    text-align: center;
-    margin-top: 15px;
+    background: #fff8e1; padding: 10px; border-radius: 8px;
+    font-size: 13px; color: #7a5d00; text-align: center; margin-top: 15px;
   }
-  @media (max-width: 500px) {
-    .row { flex-direction: column; gap: 0; }
-    .header h1 { font-size: 20px; }
-  }
+
+  /* Utility */
+  .hidden { display: none; }
 </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>🕋 بيت الحبيب ﷺ </h1>
-      <h2>لحجز فنادق مكة المكرمه و المدينه المنورة</h2>
-      <p>املأ البيانات التالية وسنتواصل معك لتأكيد الحجز</p>
+      <h1>🕋 بيت الحبيب ﷺ</h1>
+      <h2>لحجز فنادق مكة المكرمة والمدينة المنورة</h2>
     </div>
-    <form id="bookingForm">
-      <div class="form-group">
-        <label>الاسم بالكامل *</label>
-        <input type="text" id="name" required placeholder="مثال: أحمد محمد علي">
-      </div>
 
-      <div class="form-group">
-        <label>رقم الهاتف (واتساب) *</label>
-        <input type="tel" id="phone" required placeholder="مثال: 00201000000000">
-      </div>
-
-      <div class="form-group">
-        <label>الجنسية *</label>
-        <input type="text" id="nationality" required placeholder="مثال: مصري">
-      </div>
-
-      <div class="row">
-        <div class="form-group">
-          <label>تاريخ الدخول *</label>
-          <input type="date" id="checkIn" required>
-        </div>
-        <div class="form-group">
-          <label>تاريخ الخروج *</label>
-          <input type="date" id="checkOut" required>
+    <div class="content">
+      <!-- 1. الصفحة الرئيسية: اختيار المدينة -->
+      <div id="view-home">
+        <p style="text-align: center; color: #555; margin-bottom: 10px;">اختر المدينة لعرض الفنادق المتاحة:</p>
+        <div class="city-cards">
+          <div class="city-card" onclick="showHotels('makkah')">
+            <span class="icon">🕋</span>
+            <span class="title">فنادق مكة</span>
+          </div>
+          <div class="city-card" onclick="showHotels('madinah')">
+            <span class="icon">🕌</span>
+            <span class="title">فنادق المدينة</span>
+          </div>
         </div>
       </div>
 
-      <div class="row">
-        <div class="form-group">
-          <label>عدد الغرف *</label>
-          <input type="number" id="rooms" min="1" value="1" required>
+      <!-- 2. صفحة قائمة الفنادق -->
+      <div id="view-hotels" class="hidden">
+        <div class="top-bar">
+          <button class="back-btn" onclick="showView('view-home')">→ رجوع</button>
+          <h3 id="city-title" style="color: #0f4c3a;"></h3>
+          <button class="add-hotel-btn" onclick="showView('view-add-hotel')">+ إضافة فندق</button>
+        </div>
+        <div id="hotels-list">
+          <!-- الفنادق هتظهر هنا -->
+        </div>
+      </div>
+
+      <!-- 3. صفحة إضافة فندق -->
+      <div id="view-add-hotel" class="hidden">
+        <div class="top-bar">
+          <button class="back-btn" onclick="showView('view-hotels')">→ رجوع</button>
+          <h3 style="color: #0f4c3a;">إضافة فندق جديد</h3>
         </div>
         <div class="form-group">
-          <label>نوع الغرفة *</label>
-          <select id="roomType" required>
-            <option value="">اختر...</option>
-            <option value="فردية">فردية</option>
-            <option value="مزدوجة">مزدوجة</option>
-            <option value="ثلاثية">ثلاثية</option>
-            <option value="رباعية">رباعية</option>
-            <option value="جناح">جناح</option>
+          <label>اسم الفندق</label>
+          <input type="text" id="new-hotel-name" placeholder="مثال: فندق هيلتون">
+        </div>
+        <div class="form-group">
+          <label>المدينة</label>
+          <select id="new-hotel-city">
+            <option value="makkah">مكة المكرمة</option>
+            <option value="madinah">المدينة المنورة</option>
           </select>
         </div>
+        <div class="form-group">
+          <label>السعر التقريبي (اختياري)</label>
+          <input type="text" id="new-hotel-price" placeholder="مثال: 400 ريال / ليلة">
+        </div>
+        <button class="submit-btn" style="background: #d4af37;" onclick="addNewHotel()">حفظ الفندق</button>
+        <div class="note">⚠️ ملاحظة: الإضافة هنا للتجربة على جهازك فقط. لإضافة فندق يظهر للعملاء بشكل دائم، أضيفيه في الكود مباشرة (موضح في الأسفل).</div>
       </div>
 
-      <div class="form-group">
-        <label>اسم الفندق *</label>
-        <input type="text" id="hotel" required placeholder="مثال: فندق هيلتون مكة">
+      <!-- 4. صفحة نموذج الحجز -->
+      <div id="view-booking" class="hidden">
+        <div class="top-bar">
+          <button class="back-btn" onclick="showView('view-hotels')">→ رجوع للفنادق</button>
+          <h3 style="color: #0f4c3a;">بيانات الحجز</h3>
+        </div>
+        <form id="bookingForm">
+          <div class="form-group">
+            <label>اسم الفندق المختار</label>
+            <input type="text" id="selected-hotel" readonly style="background: #f0f0f0; color: #0f4c3a; font-weight: bold;">
+            <input type="hidden" id="selected-city">
+          </div>
+          <div class="form-group">
+            <label>الاسم بالكامل *</label>
+            <input type="text" id="name" required placeholder="مثال: أحمد محمد علي">
+          </div>
+          <div class="form-group">
+            <label>رقم الهاتف (واتساب) *</label>
+            <input type="tel" id="phone" required placeholder="مثال: 01000000000">
+          </div>
+          <div class="form-group">
+            <label>الجنسية *</label>
+            <input type="text" id="nationality" required placeholder="مثال: مصري">
+          </div>
+          <div class="row">
+            <div class="form-group">
+              <label>تاريخ الدخول *</label>
+              <input type="date" id="checkIn" required>
+            </div>
+            <div class="form-group">
+              <label>تاريخ الخروج *</label>
+              <input type="date" id="checkOut" required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group">
+              <label>عدد الغرف *</label>
+              <input type="number" id="rooms" min="1" value="1" required>
+            </div>
+            <div class="form-group">
+              <label>نوع الغرفة *</label>
+              <select id="roomType" required>
+                <option value="فردية">فردية</option>
+                <option value="مزدوجة">مزدوجة</option>
+                <option value="ثلاثية">ثلاثية</option>
+                <option value="رباعية">رباعية</option>
+                <option value="جناح">جناح</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="submit-btn">✅ إرسال الطلب عبر واتساب</button>
+          <div class="note">⚠️ بعد الضغط سيتم فتح واتساب لإرسال الطلب مباشرة</div>
+        </form>
       </div>
 
-      <button type="submit" class="btn">✅ تأكيد الإتاحة</button>
-
-      <div class="note">
-        ⚠️ بعد الضغط سيتم فتح واتساب لإرسال طلب الحجز مباشرة
-      </div>
-    </form>
+    </div>
   </div>
 
 <script>
-  // ✅ رقم الواتساب اللي هيوصل عليه الطلبات
-  const WHATSAPP_NUMBER = "201002395091";
+  // ✅ رقم الواتساب اللي هيوصل عليه الطلبات (تأكدي أنه الرقم الصحيح)
+  const WHATSAPP_NUMBER = "201285271241";
 
+  // 🏨 قائمة الفنادق (هنا تضيفي الفنادق بشكل دائم ليظهر للعملاء)
+  let hotels = [
+    { id: 1, name: "فندق هيلتون مكة", city: "makkah", price: "500 ريال/ليلة" },
+    { id: 2, name: "فندق بولمان زمزم", city: "makkah", price: "450 ريال/ليلة" },
+    { id: 3, name: "فندق ماريوت المدينة", city: "madinah", price: "400 ريال/ليلة" },
+    { id: 4, name: "فندق الأنوار كيمبنسكي", city: "makkah", price: "600 ريال/ليلة" },
+    
+    // ==========================================
+    // 👇 أضيفي الفنادق الجديدة هنا بنفس الطريقة 👇
+    // { id: 5, name: "اسم الفندق الجديد", city: "makkah", price: "350 ريال/ليلة" },
+    // { id: 6, name: "فندق جديد في المدينة", city: "madinah", price: "300 ريال/ليلة" },
+    // ==========================================
+  ];
+
+  let currentCity = '';
+
+  // دالة التنقل بين الصفحات
+  function showView(viewId) {
+    document.getElementById('view-home').classList.add('hidden');
+    document.getElementById('view-hotels').classList.add('hidden');
+    document.getElementById('view-add-hotel').classList.add('hidden');
+    document.getElementById('view-booking').classList.add('hidden');
+    document.getElementById(viewId).classList.remove('hidden');
+  }
+
+  // عرض فنادق المدينة المختارة
+  function showHotels(city) {
+    currentCity = city;
+    const cityName = city === 'makkah' ? 'مكة المكرمة 🕋' : 'المدينة المنورة 🕌';
+    document.getElementById('city-title').innerText = cityName;
+    
+    const listContainer = document.getElementById('hotels-list');
+    listContainer.innerHTML = ''; // مسح القائمة القديمة
+
+    const cityHotels = hotels.filter(h => h.city === city);
+    
+    if (cityHotels.length === 0) {
+      listContainer.innerHTML = '<p style="text-align:center; color:#777; padding:20px;">لا توجد فنادق مضافة حالياً.</p>';
+    } else {
+      cityHotels.forEach(hotel => {
+        const div = document.createElement('div');
+        div.className = 'hotel-item';
+        div.innerHTML = `
+          <div class="hotel-info">
+            <h3>${hotel.name}</h3>
+            <p>${hotel.price || 'السعر عند الطلب'}</p>
+          </div>
+          <button class="book-btn" onclick="openBooking('${hotel.name}', '${city}')">احجز الآن</button>
+        `;
+        listContainer.appendChild(div);
+      });
+    }
+    showView('view-hotels');
+  }
+
+  // إضافة فندق جديد (تجريبي محلي فقط)
+  function addNewHotel() {
+    const name = document.getElementById('new-hotel-name').value;
+    const city = document.getElementById('new-hotel-city').value;
+    const price = document.getElementById('new-hotel-price').value;
+
+    if (!name) { alert('يرجى كتابة اسم الفندق'); return; }
+
+    hotels.push({ id: Date.now(), name, city, price });
+    alert('تمت إضافة الفندق بنجاح! (ملاحظة: للحفظ الدائم للجميع، أضيفيه في الكود في الأعلى)');
+    
+    document.getElementById('new-hotel-name').value = '';
+    document.getElementById('new-hotel-price').value = '';
+    showHotels(city);
+  }
+
+  // فتح نموذج الحجز مع بيانات الفندق
+  function openBooking(hotelName, city) {
+    document.getElementById('selected-hotel').value = hotelName;
+    document.getElementById('selected-city').value = city;
+    showView('view-booking');
+  }
+
+  // إرسال الطلب للواتساب
   document.getElementById('bookingForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
     const data = {
+      hotel: document.getElementById('selected-hotel').value,
+      city: document.getElementById('selected-city').value === 'makkah' ? 'مكة المكرمة' : 'المدينة المنورة',
       name: document.getElementById('name').value,
       phone: document.getElementById('phone').value,
       nationality: document.getElementById('nationality').value,
       checkIn: document.getElementById('checkIn').value,
       checkOut: document.getElementById('checkOut').value,
       rooms: document.getElementById('rooms').value,
-      roomType: document.getElementById('roomType').value,
-      hotel: document.getElementById('hotel').value
+      roomType: document.getElementById('roomType').value
     };
 
     const message =
-`🕋 *طلب حجز جديد - فنادق مكة والمدينة*
+`🕋 *طلب حجز جديد - بيت الحبيب ﷺ*
+
+🏢 *الفندق:* ${data.hotel}
+📍 *المدينة:* ${data.city}
 
 👤 *الاسم:* ${data.name}
-📞 *رقم الهاتف:* ${data.phone}
- *الجنسية:* ${data.nationality}
+📞 *الهاتف:* ${data.phone}
+🌍 *الجنسية:* ${data.nationality}
 
-📅 *تاريخ الدخول:* ${data.checkIn}
-📅 *تاريخ الخروج:* ${data.checkOut}
-
+📅 *الدخول:* ${data.checkIn}
+📅 *الخروج:* ${data.checkOut}
 🛏️ *عدد الغرف:* ${data.rooms}
 🏨 *نوع الغرفة:* ${data.roomType}
- *الفندق:* ${data.hotel}
 
 ✨ برجاء تأكيد الإتاحة والسعر`;
 
