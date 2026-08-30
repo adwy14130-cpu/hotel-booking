@@ -7,7 +7,9 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tahoma', sans-serif; }
   body {
-    background: linear-gradient(135deg, #0f4c3a 0%, #1a7a5c 100%);
+    background: linear-gradient(rgba(15, 76, 58, 0.6), rgba(15, 76, 58, 0.6)), 
+                url('resize.jpg') no-repeat center center fixed;
+    background-size: cover;
     min-height: 100vh;
     padding: 20px;
     display: flex;
@@ -17,42 +19,39 @@
   .container {
     background: #fff;
     width: 100%;
-    max-width: 1800px;  /* تم التكبير من 600px إلى 800px */
-    min-height: 80vh;
+    max-width: 800px;
     border-radius: 15px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
     overflow: hidden;
     margin: 20px 0;
   }
   .header {
     background: linear-gradient(135deg, #0f4c3a, #d4af37);
     color: #fff;
-    padding: 30px 20px;  /* تم تكبير الهيدر */
+    padding: 30px 20px;
     text-align: center;
   }
-  .header h1 { font-size: 28px; margin-bottom: 10px; }  /* خط أكبر */
+  .header h1 { font-size: 28px; margin-bottom: 10px; }
   .header h2 { font-size: 18px; font-weight: normal; opacity: 0.95; }
   
-  .content { padding: 40px; }  /* مساحة داخلية أكبر */
+  .content { padding: 40px; }
   
-  /* Home View Styles - تكبير البطاقات */
   .city-cards { display: flex; gap: 25px; justify-content: center; margin-top: 30px; }
   .city-card {
     background: #f8f9fa;
     border: 2px solid #e0e0e0;
     border-radius: 15px;
-    padding: 50px 30px;  /* تكبير المساحة الداخلية */
+    padding: 50px 30px;
     text-align: center;
     cursor: pointer;
     flex: 1;
-    max-width: 300px;  /* تكبير العرض الأقصى */
+    max-width: 300px;
     transition: all 0.3s;
   }
   .city-card:hover { border-color: #d4af37; transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
-  .city-card .icon { font-size: 60px; margin-bottom: 15px; display: block; }  /* أيقونة أكبر */
-  .city-card .title { font-size: 22px; font-weight: bold; color: #0f4c3a; }  /* خط أكبر */
+  .city-card .icon { font-size: 60px; margin-bottom: 15px; display: block; }
+  .city-card .title { font-size: 22px; font-weight: bold; color: #0f4c3a; }
 
-  /* Hotels List Styles */
   .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
   .back-btn { background: none; border: none; color: #0f4c3a; font-size: 18px; cursor: pointer; font-weight: bold; }
   .add-hotel-btn {
@@ -71,7 +70,6 @@
     border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold;
   }
 
-  /* Form Styles */
   .form-group { margin-bottom: 20px; }
   label { display: block; margin-bottom: 8px; font-weight: bold; color: #0f4c3a; font-size: 16px; }
   input, select {
@@ -91,10 +89,8 @@
     font-size: 14px; color: #7a5d00; text-align: center; margin-top: 20px;
   }
 
-  /* Utility */
   .hidden { display: none; }
 
-  /* للموبايل - تصغير شوية */
   @media (max-width: 768px) {
     .container { max-width: 95%; margin: 10px; }
     .content { padding: 20px; }
@@ -113,12 +109,11 @@
     </div>
 
     <div class="content">
-      <!-- 1. الصفحة الرئيسية: اختيار المدينة -->
       <div id="view-home">
         <p style="text-align: center; color: #555; margin-bottom: 15px; font-size: 16px;">اختر المدينة لعرض الفنادق المتاحة:</p>
         <div class="city-cards">
           <div class="city-card" onclick="showHotels('makkah')">
-            <span class="icon">🕋</span>
+            <span class="icon"></span>
             <span class="title">فنادق مكة</span>
           </div>
           <div class="city-card" onclick="showHotels('madinah')">
@@ -128,19 +123,15 @@
         </div>
       </div>
 
-      <!-- 2. صفحة قائمة الفنادق -->
       <div id="view-hotels" class="hidden">
         <div class="top-bar">
           <button class="back-btn" onclick="showView('view-home')">→ رجوع</button>
           <h3 id="city-title" style="color: #0f4c3a;"></h3>
           <button class="add-hotel-btn" onclick="showView('view-add-hotel')">+ إضافة فندق</button>
         </div>
-        <div id="hotels-list">
-          <!-- الفنادق هتظهر هنا -->
-        </div>
+        <div id="hotels-list"></div>
       </div>
 
-      <!-- 3. صفحة إضافة فندق -->
       <div id="view-add-hotel" class="hidden">
         <div class="top-bar">
           <button class="back-btn" onclick="showView('view-hotels')">→ رجوع</button>
@@ -165,7 +156,6 @@
         <div class="note">⚠️ ملاحظة: الإضافة هنا للتجربة على جهازك فقط. لإضافة فندق يظهر للعملاء بشكل دائم، أضيفيه في الكود مباشرة.</div>
       </div>
 
-      <!-- 4. صفحة نموذج الحجز -->
       <div id="view-booking" class="hidden">
         <div class="top-bar">
           <button class="back-btn" onclick="showView('view-hotels')">→ رجوع للفنادق</button>
@@ -219,23 +209,17 @@
           <div class="note">⚠️ بعد الضغط سيتم فتح واتساب لإرسال الطلب مباشرة</div>
         </form>
       </div>
-
     </div>
   </div>
 
 <script>
-  // ✅ رقم الواتساب اللي هيوصل عليه الطلبات
   const WHATSAPP_NUMBER = "201285271241";
 
-  // 🏨 قائمة الفنادق
   let hotels = [
     { id: 1, name: "فندق هيلتون مكة", city: "makkah", price: "500 ريال/ليلة" },
     { id: 2, name: "فندق بولمان زمزم", city: "makkah", price: "450 ريال/ليلة" },
     { id: 3, name: "فندق ماريوت المدينة", city: "madinah", price: "400 ريال/ليلة" },
     { id: 4, name: "فندق الأنوار كيمبنسكي", city: "makkah", price: "600 ريال/ليلة" },
-    
-    // أضيفي فنادق جديدة هنا 👇
-    // { id: 5, name: "اسم الفندق", city: "makkah", price: "350 ريال/ليلة" },
   ];
 
   let currentCity = '';
@@ -314,7 +298,7 @@
     };
 
     const message =
-`🕋 *طلب حجز جديد - بيت الحبيب ﷺ*
+` *طلب حجز جديد - بيت الحبيب ﷺ*
 
  *الفندق:* ${data.hotel}
 📍 *المدينة:* ${data.city}
@@ -325,7 +309,7 @@
 
 📅 *الدخول:* ${data.checkIn}
 📅 *الخروج:* ${data.checkOut}
-️ *عدد الغرف:* ${data.rooms}
+ *عدد الغرف:* ${data.rooms}
 🏨 *نوع الغرفة:* ${data.roomType}
 
 ✨ برجاء تأكيد الإتاحة والسعر`;
