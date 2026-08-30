@@ -17,47 +17,58 @@
     align-items: flex-start;
   }
   .container {
-    background: #fff;
     width: 100%;
     max-width: 1800px;
     min-height: 80vh;
-    border-radius: 15px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-    overflow: hidden;
     margin: 20px 0;
+    padding: 40px;
   }
-  .header {
-    background: linear-gradient(135deg, #0f4c3a, #d4af37);
-    color: #fff;
-    padding: 30px 20px;
-    text-align: center;
-  }
-  .header h1 { font-size: 28px; margin-bottom: 10px; }
-  .header h2 { font-size: 18px; font-weight: normal; opacity: 0.95; }
+
+  .content { padding: 20px 0; }
   
-  .content { padding: 40px; }
+  .page-title {
+    text-align: center;
+    color: #fff;
+    font-size: 32px;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+  }
+  .page-subtitle {
+    text-align: center;
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 40px;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+  }
+  .select-text {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 30px;
+    font-size: 18px;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+  }
   
   .city-cards { 
     display: flex; 
     gap: 30px; 
     justify-content: center; 
-    margin-top: 50px;
+    margin-top: 20px;
     flex-wrap: wrap;
   }
   .city-card {
     position: relative;
-    width: 450px;
-    height: 350px;
+    width: 400px;
+    height: 300px;
     border-radius: 20px;
     overflow: hidden;
     cursor: pointer;
     transition: all 0.4s ease;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     border: none;
   }
   .city-card:hover {
     transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
   }
   .city-card .card-image {
     position: absolute;
@@ -79,20 +90,6 @@
       rgba(0,0,0,0.5) 50%, 
       rgba(0,0,0,0.7) 100%);
   }
-  .city-card .city-name {
-    position: absolute;
-    top: 25px;
-    right: 25px;
-    color: white;
-    font-size: 28px;
-    font-weight: bold;
-    z-index: 2;
-    text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
-    background: rgba(15, 76, 58, 0.7);
-    padding: 10px 25px;
-    border-radius: 10px;
-    backdrop-filter: blur(5px);
-  }
   .city-card .card-content {
     position: absolute;
     bottom: 30px;
@@ -107,11 +104,20 @@
     font-size: 32px;
     font-weight: bold;
     margin-bottom: 10px;
-    text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
   }
   .city-card .card-content .subtitle {
     font-size: 18px;
     opacity: 0.95;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+  }
+
+  /* باقي الصفحات (فنادق، حجز) بخلفية بيضاء */
+  .white-box {
+    background: #fff;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
   }
 
   .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
@@ -153,46 +159,43 @@
 
   .hidden { display: none; }
 
-  @media (max-width: 968px) {
-    .container { max-width: 95%; margin: 10px; }
-    .content { padding: 20px; }
-    .city-cards { flex-direction: column; gap: 20px; align-items: center; }
-    .city-card { 
-      width: 100%; 
-      max-width: 400px; 
-      height: 300px;
+  @media (max-width: 768px) {
+    body { padding: 10px; }
+    .container { padding: 15px; margin: 10px 0; }
+    .page-title { font-size: 24px; }
+    .page-subtitle { font-size: 14px; }
+    .select-text { font-size: 16px; }
+    .city-cards { 
+      flex-direction: row;
+      gap: 15px;
+      align-items: center;
     }
-    .city-card .city-name {
-      font-size: 22px;
-      top: 15px;
-      right: 15px;
-      padding: 8px 18px;
+    .city-card { 
+      width: calc(50% - 10px);
+      max-width: 200px;
+      height: 220px;
     }
     .city-card .card-content .title {
-      font-size: 26px;
+      font-size: 20px;
     }
     .city-card .card-content .subtitle {
-      font-size: 16px;
+      font-size: 13px;
     }
-    .header h1 { font-size: 22px; }
-    .header h2 { font-size: 14px; }
+    .white-box { padding: 20px; }
   }
 </style>
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <h1>🕋 بيت الحبيب </h1>
-      <h2>لحجز فنادق مكة المكرمة والمدينة المنورة</h2>
-    </div>
-
     <div class="content">
       <div id="view-home">
-        <p style="text-align: center; color: #555; margin-bottom: 15px; font-size: 16px;">اختر المدينة لعرض الفنادق المتاحة:</p>
+        <h1 class="page-title">🕋 بيت الحبيب ﷺ</h1>
+        <p class="page-subtitle">لحجز فنادق مكة المكرمة والمدينة المنورة</p>
+        <p class="select-text">اختر المدينة لعرض الفنادق المتاحة:</p>
         <div class="city-cards">
           <!-- بطاقة مكة -->
           <div class="city-card" onclick="showHotels('makkah')">
-           <div class="card-image" style="background-image: url('./makkah.jpg');"></div>
+            <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1565552645632-d725f8bfc19a?w=800&q=80');"></div>
             <div class="card-overlay"></div>
             <div class="card-content">
               <div class="title">فنادق مكة</div>
@@ -202,7 +205,7 @@
           
           <!-- بطاقة المدينة -->
           <div class="city-card" onclick="showHotels('madinah')">
-           <div class="card-image" style="background-image: url('./madinah.jpg');"></div>
+            <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1542389392-a3c690663f86?w=800&q=80');"></div>
             <div class="card-overlay"></div>
             <div class="card-content">
               <div class="title">فنادق المدينة</div>
@@ -213,90 +216,96 @@
       </div>
 
       <div id="view-hotels" class="hidden">
-        <div class="top-bar">
-          <button class="back-btn" onclick="showView('view-home')">→ رجوع</button>
-          <h3 id="city-title" style="color: #0f4c3a;"></h3>
-          <button class="add-hotel-btn" onclick="showView('view-add-hotel')">+ إضافة فندق</button>
+        <div class="white-box">
+          <div class="top-bar">
+            <button class="back-btn" onclick="showView('view-home')">→ رجوع</button>
+            <h3 id="city-title" style="color: #0f4c3a;"></h3>
+            <button class="add-hotel-btn" onclick="showView('view-add-hotel')">+ إضافة فندق</button>
+          </div>
+          <div id="hotels-list"></div>
         </div>
-        <div id="hotels-list"></div>
       </div>
 
       <div id="view-add-hotel" class="hidden">
-        <div class="top-bar">
-          <button class="back-btn" onclick="showView('view-hotels')">→ رجوع</button>
-          <h3 style="color: #0f4c3a;">إضافة فندق جديد</h3>
+        <div class="white-box">
+          <div class="top-bar">
+            <button class="back-btn" onclick="showView('view-hotels')">→ رجوع</button>
+            <h3 style="color: #0f4c3a;">إضافة فندق جديد</h3>
+          </div>
+          <div class="form-group">
+            <label>اسم الفندق</label>
+            <input type="text" id="new-hotel-name" placeholder="مثال: فندق هيلتون">
+          </div>
+          <div class="form-group">
+            <label>المدينة</label>
+            <select id="new-hotel-city">
+              <option value="makkah">مكة المكرمة</option>
+              <option value="madinah">المدينة المنورة</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>السعر التقريبي (اختياري)</label>
+            <input type="text" id="new-hotel-price" placeholder="مثال: 400 ريال / ليلة">
+          </div>
+          <button class="submit-btn" style="background: #d4af37;" onclick="addNewHotel()">حفظ الفندق</button>
+          <div class="note">⚠️ ملاحظة: الإضافة هنا للتجربة على جهازك فقط. لإضافة فندق يظهر للعملاء بشكل دائم، أضيفيه في الكود مباشرة.</div>
         </div>
-        <div class="form-group">
-          <label>اسم الفندق</label>
-          <input type="text" id="new-hotel-name" placeholder="مثال: فندق هيلتون">
-        </div>
-        <div class="form-group">
-          <label>المدينة</label>
-          <select id="new-hotel-city">
-            <option value="makkah">مكة المكرمة</option>
-            <option value="madinah">المدينة المنورة</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>السعر التقريبي (اختياري)</label>
-          <input type="text" id="new-hotel-price" placeholder="مثال: 400 ريال / ليلة">
-        </div>
-        <button class="submit-btn" style="background: #d4af37;" onclick="addNewHotel()">حفظ الفندق</button>
-        <div class="note">⚠️ ملاحظة: الإضافة هنا للتجربة على جهازك فقط. لإضافة فندق يظهر للعملاء بشكل دائم، أضيفيه في الكود مباشرة.</div>
       </div>
 
       <div id="view-booking" class="hidden">
-        <div class="top-bar">
-          <button class="back-btn" onclick="showView('view-hotels')">→ رجوع للفنادق</button>
-          <h3 style="color: #0f4c3a;">بيانات الحجز</h3>
+        <div class="white-box">
+          <div class="top-bar">
+            <button class="back-btn" onclick="showView('view-hotels')">→ رجوع للفنادق</button>
+            <h3 style="color: #0f4c3a;">بيانات الحجز</h3>
+          </div>
+          <form id="bookingForm">
+            <div class="form-group">
+              <label>اسم الفندق المختار</label>
+              <input type="text" id="selected-hotel" readonly style="background: #f0f0f0; color: #0f4c3a; font-weight: bold;">
+              <input type="hidden" id="selected-city">
+            </div>
+            <div class="form-group">
+              <label>الاسم بالكامل *</label>
+              <input type="text" id="name" required placeholder="مثال: أحمد محمد علي">
+            </div>
+            <div class="form-group">
+              <label>رقم الهاتف (واتساب) *</label>
+              <input type="tel" id="phone" required placeholder="مثال: 01000000000">
+            </div>
+            <div class="form-group">
+              <label>الجنسية *</label>
+              <input type="text" id="nationality" required placeholder="مثال: مصري">
+            </div>
+            <div class="row">
+              <div class="form-group">
+                <label>تاريخ الدخول *</label>
+                <input type="date" id="checkIn" required>
+              </div>
+              <div class="form-group">
+                <label>تاريخ الخروج *</label>
+                <input type="date" id="checkOut" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group">
+                <label>عدد الغرف *</label>
+                <input type="number" id="rooms" min="1" value="1" required>
+              </div>
+              <div class="form-group">
+                <label>نوع الغرفة *</label>
+                <select id="roomType" required>
+                  <option value="فردية">فردية</option>
+                  <option value="مزدوجة">مزدوجة</option>
+                  <option value="ثلاثية">ثلاثية</option>
+                  <option value="رباعية">رباعية</option>
+                  <option value="جناح">جناح</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="submit-btn">✅ إرسال الطلب عبر واتساب</button>
+            <div class="note">️ بعد الضغط سيتم فتح واتساب لإرسال الطلب مباشرة</div>
+          </form>
         </div>
-        <form id="bookingForm">
-          <div class="form-group">
-            <label>اسم الفندق المختار</label>
-            <input type="text" id="selected-hotel" readonly style="background: #f0f0f0; color: #0f4c3a; font-weight: bold;">
-            <input type="hidden" id="selected-city">
-          </div>
-          <div class="form-group">
-            <label>الاسم بالكامل *</label>
-            <input type="text" id="name" required placeholder="مثال: أحمد محمد علي">
-          </div>
-          <div class="form-group">
-            <label>رقم الهاتف (واتساب) *</label>
-            <input type="tel" id="phone" required placeholder="مثال: 01000000000">
-          </div>
-          <div class="form-group">
-            <label>الجنسية *</label>
-            <input type="text" id="nationality" required placeholder="مثال: مصري">
-          </div>
-          <div class="row">
-            <div class="form-group">
-              <label>تاريخ الدخول *</label>
-              <input type="date" id="checkIn" required>
-            </div>
-            <div class="form-group">
-              <label>تاريخ الخروج *</label>
-              <input type="date" id="checkOut" required>
-            </div>
-          </div>
-          <div class="row">
-            <div class="form-group">
-              <label>عدد الغرف *</label>
-              <input type="number" id="rooms" min="1" value="1" required>
-            </div>
-            <div class="form-group">
-              <label>نوع الغرفة *</label>
-              <select id="roomType" required>
-                <option value="فردية">فردية</option>
-                <option value="مزدوجة">مزدوجة</option>
-                <option value="ثلاثية">ثلاثية</option>
-                <option value="رباعية">رباعية</option>
-                <option value="جناح">جناح</option>
-              </select>
-            </div>
-          </div>
-          <button type="submit" class="submit-btn">✅ إرسال الطلب عبر واتساب</button>
-          <div class="note">⚠️ بعد الضغط سيتم فتح واتساب لإرسال الطلب مباشرة</div>
-        </form>
       </div>
     </div>
   </div>
@@ -390,15 +399,15 @@
 ` *طلب حجز جديد - بيت الحبيب ﷺ*
 
  *الفندق:* ${data.hotel}
-📍 *المدينة:* ${data.city}
+ *المدينة:* ${data.city}
 
-👤 *الاسم:* ${data.name}
- *الهاتف:* ${data.phone}
+ *الاسم:* ${data.name}
+📞 *الهاتف:* ${data.phone}
 🌍 *الجنسية:* ${data.nationality}
 
 📅 *الدخول:* ${data.checkIn}
 📅 *الخروج:* ${data.checkOut}
- *عدد الغرف:* ${data.rooms}
+🛏️ *عدد الغرف:* ${data.rooms}
 🏨 *نوع الغرفة:* ${data.roomType}
 
 ✨ برجاء تأكيد الإتاحة والسعر`;
