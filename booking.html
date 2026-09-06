@@ -129,7 +129,6 @@
     font-weight: bold; 
   }
   
-  /* أيقونات الإدارة في الأعلى */
   .admin-controls {
     display: flex;
     gap: 10px;
@@ -158,7 +157,6 @@
     background: #25D366;
   }
   
-  /* زرار إضافة فندق */
   .add-hotel-btn {
     background: #d4af37;
     color: #fff;
@@ -191,6 +189,35 @@
     align-items: center;
     gap: 15px;
   }
+  .hotel-images-preview {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .hotel-thumb {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 2px solid #ddd;
+    transition: all 0.2s;
+  }
+  .hotel-thumb:hover {
+    transform: scale(1.1);
+    border-color: #0f4c3a;
+  }
+  .hotel-img-placeholder {
+    width: 80px;
+    height: 60px;
+    background: #e0e0e0;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    flex-shrink: 0;
+  }
   .hotel-info { flex: 1; }
   .hotel-info h3 { font-size: 18px; color: #0f4c3a; margin-bottom: 8px; }
   .hotel-info p { font-size: 14px; color: #666; margin-bottom: 4px; }
@@ -207,7 +234,6 @@
   }
   .book-btn:hover { background: #1da851; }
   
-  /* أيقونات التعديل والحذف */
   .hotel-actions {
     display: flex;
     gap: 8px;
@@ -268,6 +294,81 @@
     text-align: center;
     margin-top: 20px;
   }
+  
+  /* معاينة الصور في نموذج الإضافة */
+  .upload-preview {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .preview-img {
+    width: 100px;
+    height: 75px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+  }
+  .upload-hint {
+    color: #666;
+    font-size: 13px;
+    margin-top: 5px;
+    display: block;
+  }
+  
+  /* معرض الصور (Modal) */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.95);
+  }
+  .modal-content {
+    max-width: 90%;
+    max-height: 90%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+  }
+  .modal-close {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1001;
+  }
+  .modal-close:hover { color: #d4af37; }
+  .modal-prev, .modal-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 20px;
+    user-select: none;
+  }
+  .modal-prev:hover, .modal-next:hover { color: #d4af37; }
+  .modal-prev { left: 20px; }
+  .modal-next { right: 20px; }
+  .modal-counter {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    font-size: 16px;
+  }
 
   .hidden { display: none !important; }
 
@@ -284,6 +385,7 @@
     .hotel-item { flex-direction: column; text-align: center; }
     .hotel-actions { justify-content: center; }
     .top-bar { justify-content: center; }
+    .hotel-images-preview { justify-content: center; }
   }
 </style>
 </head>
@@ -320,12 +422,10 @@
             <button class="back-btn" onclick="showView('view-home')">→ رجوع</button>
             <h3 id="city-title" style="color: #0f4c3a;"></h3>
             <div class="admin-controls">
-              <!-- زرار إضافة فندق (يظهر فقط للأدمن) -->
               <button class="add-hotel-btn hidden" id="add-btn" onclick="addNewHotel()">
                 <span>➕</span>
                 <span>إضافة فندق</span>
               </button>
-              <!-- أيقونة الأدمن -->
               <button class="admin-icon" id="admin-icon" onclick="requestAdminPassword()" title="دخول الأدمن">🔐</button>
             </div>
           </div>
@@ -360,8 +460,11 @@
             <input type="number" id="new-hotel-price" placeholder="مثال: 500">
           </div>
           <div class="form-group">
-            <label>رابط صورة الفندق (اختياري)</label>
-            <input type="url" id="new-hotel-image" placeholder="https://example.com/hotel.jpg">
+            <label>صور الفندق (حتى 3 صور من الجهاز)</label>
+            <input type="file" id="new-hotel-images" accept="image/*" multiple onchange="previewNewImages(this)">
+            <span class="upload-hint">💡 يمكن اختيار صورة أو صورتين أو 3 صور</span>
+            <div class="upload-preview" id="upload-preview"></div>
+            <div id="existing-images-info" style="margin-top: 10px; color: #666; font-size: 13px;"></div>
           </div>
           <button class="submit-btn" style="background: #d4af37;" onclick="saveHotel()">💾 حفظ الفندق</button>
           <div class="note">⚠️ ملاحظة: التعديل هنا مؤقت. للحفظ الدائم، عدلي الكود على GitHub</div>
@@ -426,19 +529,31 @@
     </div>
   </div>
 
+  <!-- معرض الصور -->
+  <div id="image-modal" class="modal">
+    <span class="modal-close" onclick="closeModal()">&times;</span>
+    <span class="modal-prev" onclick="changeImage(-1)">&#10094;</span>
+    <span class="modal-next" onclick="changeImage(1)">&#10095;</span>
+    <img class="modal-content" id="modal-img">
+    <div class="modal-counter" id="modal-counter"></div>
+  </div>
+
 <script>
   const WHATSAPP_NUMBER = "201002395091";
   const ADMIN_PASSWORD = "admin123";
   let isAdmin = false;
 
   let hotels = [
-    { id: 1, name: "فندق هيلتون مكة", city: "makkah", street: "شارع إبراهيم الخليل", price: "500", image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400" },
-    { id: 2, name: "فندق بولمان زمزم", city: "makkah", street: "شارع أجياد", price: "450", image: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=400" },
-    { id: 3, name: "فندق ماريوت المدينة", city: "madinah", street: "طريق الملك فهد", price: "400", image: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=400" },
-    { id: 4, name: "فندق الأنوار كيمبنسكي", city: "makkah", street: "شارع النخيل", price: "600", image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=400" }
+    { id: 1, name: "فندق هيلتون مكة", city: "makkah", street: "شارع إبراهيم الخليل", price: "500", images: ["https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400"] },
+    { id: 2, name: "فندق بولمان زمزم", city: "makkah", street: "شارع أجياد", price: "450", images: ["https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=400"] },
+    { id: 3, name: "فندق ماريوت المدينة", city: "madinah", street: "طريق الملك فهد", price: "400", images: ["https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=400"] },
+    { id: 4, name: "فندق الأنوار كيمبنسكي", city: "makkah", street: "شارع النخيل", price: "600", images: ["https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=400"] }
   ];
 
   let currentCity = '';
+  let currentNewImages = []; // للصور الجديدة اللي هتترفع
+  let modalImages = [];
+  let currentModalIndex = 0;
 
   function showView(viewId) {
     document.getElementById('view-home').classList.add('hidden');
@@ -449,7 +564,6 @@
   }
 
   function requestAdminPassword() {
-    // لو الأدمن مسجل دخول بالفعل، ممكن يخرج
     if (isAdmin) {
       if (confirm('هل تريدين الخروج من وضع الإدارة؟')) {
         isAdmin = false;
@@ -461,7 +575,7 @@
       return;
     }
     
-    const password = prompt(' أدخلي كلمة السر للإدارة:');
+    const password = prompt('🔐 أدخلي كلمة السر للإدارة:');
     if (password === ADMIN_PASSWORD) {
       isAdmin = true;
       document.getElementById('admin-icon').classList.add('logged-in');
@@ -491,7 +605,18 @@
         const div = document.createElement('div');
         div.className = 'hotel-item';
         
-        // أيقونات التعديل والحذف - تظهر فقط للأدمن
+        // عرض الصور المصغرة
+        let imagesHtml = '';
+        if (hotel.images && hotel.images.length > 0) {
+          imagesHtml = '<div class="hotel-images-preview">';
+          hotel.images.forEach((img, idx) => {
+            imagesHtml += `<img src="${img}" class="hotel-thumb" onclick="openGallery(${hotel.id}, ${idx})" title="اضغطي لعرض الصورة">`;
+          });
+          imagesHtml += '</div>';
+        } else {
+          imagesHtml = '<div class="hotel-img-placeholder">🏨</div>';
+        }
+        
         const actionsHtml = isAdmin ? `
           <div class="hotel-actions">
             <button class="action-btn edit-btn" onclick="editHotel(${hotel.id})" title="تعديل">✏️</button>
@@ -500,6 +625,7 @@
         ` : '';
         
         div.innerHTML = `
+          ${imagesHtml}
           <div class="hotel-info">
             <h3>${hotel.name}</h3>
             <p>📍 ${hotel.street || 'غير محدد'}</p>
@@ -514,6 +640,71 @@
     showView('view-hotels');
   }
 
+  // ===== معرض الصور =====
+  function openGallery(hotelId, startIndex) {
+    const hotel = hotels.find(h => h.id === hotelId);
+    if (!hotel || !hotel.images || hotel.images.length === 0) return;
+    
+    modalImages = hotel.images;
+    currentModalIndex = startIndex;
+    updateModalImage();
+    document.getElementById('image-modal').style.display = 'block';
+  }
+
+  function updateModalImage() {
+    document.getElementById('modal-img').src = modalImages[currentModalIndex];
+    document.getElementById('modal-counter').innerText = `${currentModalIndex + 1} / ${modalImages.length}`;
+  }
+
+  function changeImage(direction) {
+    currentModalIndex += direction;
+    if (currentModalIndex < 0) currentModalIndex = modalImages.length - 1;
+    if (currentModalIndex >= modalImages.length) currentModalIndex = 0;
+    updateModalImage();
+  }
+
+  function closeModal() {
+    document.getElementById('image-modal').style.display = 'none';
+  }
+
+  document.getElementById('image-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+    if (e.key === 'ArrowLeft') changeImage(-1);
+    if (e.key === 'ArrowRight') changeImage(1);
+  });
+
+  // ===== رفع الصور من الجهاز =====
+  function previewNewImages(input) {
+    const preview = document.getElementById('upload-preview');
+    preview.innerHTML = '';
+    currentNewImages = [];
+    
+    if (input.files && input.files.length > 0) {
+      if (input.files.length > 3) {
+        alert('⚠️ يمكن رفع 3 صور كحد أقصى');
+        input.value = '';
+        return;
+      }
+      
+      Array.from(input.files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          currentNewImages.push(e.target.result);
+          
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          img.className = 'preview-img';
+          preview.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  }
+
   function addNewHotel() {
     document.getElementById('form-title').innerText = '➕ إضافة فندق جديد';
     document.getElementById('edit-hotel-id').value = '';
@@ -521,7 +712,10 @@
     document.getElementById('new-hotel-city').value = 'makkah';
     document.getElementById('new-hotel-street').value = '';
     document.getElementById('new-hotel-price').value = '';
-    document.getElementById('new-hotel-image').value = '';
+    document.getElementById('new-hotel-images').value = '';
+    document.getElementById('upload-preview').innerHTML = '';
+    document.getElementById('existing-images-info').innerText = '';
+    currentNewImages = [];
     showView('view-add-hotel');
   }
 
@@ -529,13 +723,24 @@
     const hotel = hotels.find(h => h.id === hotelId);
     if (!hotel) return;
     
-    document.getElementById('form-title').innerText = '️ تعديل فندق';
+    document.getElementById('form-title').innerText = '✏️ تعديل فندق';
     document.getElementById('edit-hotel-id').value = hotelId;
     document.getElementById('new-hotel-name').value = hotel.name;
     document.getElementById('new-hotel-city').value = hotel.city;
     document.getElementById('new-hotel-street').value = hotel.street || '';
     document.getElementById('new-hotel-price').value = hotel.price || '';
-    document.getElementById('new-hotel-image').value = hotel.image || '';
+    document.getElementById('new-hotel-images').value = '';
+    document.getElementById('upload-preview').innerHTML = '';
+    currentNewImages = [];
+    
+    // عرض معلومات الصور الحالية
+    if (hotel.images && hotel.images.length > 0) {
+      document.getElementById('existing-images-info').innerText = 
+        `📷 لديك ${hotel.images.length} صورة(s) محفوظة. لرفع صور جديدة، اختاريها من الجهاز (ستُضاف للصور الموجودة بحد أقصى 3).`;
+    } else {
+      document.getElementById('existing-images-info').innerText = '';
+    }
+    
     showView('view-add-hotel');
   }
 
@@ -552,7 +757,6 @@
     const city = document.getElementById('new-hotel-city').value;
     const street = document.getElementById('new-hotel-street').value.trim();
     const price = document.getElementById('new-hotel-price').value.trim();
-    const image = document.getElementById('new-hotel-image').value.trim();
     const editId = document.getElementById('edit-hotel-id').value;
 
     if (!name || !street || !price) { 
@@ -560,17 +764,33 @@
       return; 
     }
 
+    // تحديد الصور النهائية
+    let finalImages = [];
     if (editId) {
-      // تعديل فندق موجود
+      const existingHotel = hotels.find(h => h.id === parseInt(editId));
+      if (existingHotel && existingHotel.images) {
+        finalImages = [...existingHotel.images];
+      }
+    }
+    
+    // إضافة الصور الجديدة
+    if (currentNewImages.length > 0) {
+      finalImages = [...finalImages, ...currentNewImages];
+      if (finalImages.length > 3) {
+        finalImages = finalImages.slice(0, 3);
+        alert('⚠️ تم حفظ أول 3 صور فقط (الحد الأقصى)');
+      }
+    }
+
+    if (editId) {
       const index = hotels.findIndex(h => h.id === parseInt(editId));
       if (index !== -1) {
-        hotels[index] = { id: parseInt(editId), name, city, street, price, image };
-        alert('✅ تم تعديل الفندق مؤقتاً (للحفظ الدائم، عدلي الكود على GitHub)');
+        hotels[index] = { id: parseInt(editId), name, city, street, price, images: finalImages };
+        alert('✅ تم تعديل الفندق مؤقتاً');
       }
     } else {
-      // إضافة فندق جديد
-      hotels.push({ id: Date.now(), name, city, street, price, image });
-      alert('✅ تمت إضافة الفندق مؤقتاً (للحفظ الدائم، أضيفيه في الكود على GitHub)');
+      hotels.push({ id: Date.now(), name, city, street, price, images: finalImages });
+      alert('✅ تمت إضافة الفندق مؤقتاً');
     }
     
     showHotels(city);
@@ -597,7 +817,7 @@
       roomType: document.getElementById('roomType').value
     };
 
-    const message = `🕋 *طلب حجز جديد - بيت الحبيب ﷺ*\n\n *الفندق:* ${data.hotel}\n *المدينة:* ${data.city}\n\n👤 *الاسم:* ${data.name}\n📞 *الهاتف:* ${data.phone}\n🌍 *الجنسية:* ${data.nationality}\n\n📅 *الدخول:* ${data.checkIn}\n📅 *الخروج:* ${data.checkOut}\n🛏️ *عدد الغرف:* ${data.rooms}\n🏨 *نوع الغرفة:* ${data.roomType}\n\n✨ برجاء تأكيد الإتاحة والسعر`;
+    const message = `🕋 *طلب حجز جديد - بيت الحبيب *\n\n🏢 *الفندق:* ${data.hotel}\n📍 *المدينة:* ${data.city}\n\n👤 *الاسم:* ${data.name}\n📞 *الهاتف:* ${data.phone}\n🌍 *الجنسية:* ${data.nationality}\n\n📅 *الدخول:* ${data.checkIn}\n📅 *الخروج:* ${data.checkOut}\n🛏️ *عدد الغرف:* ${data.rooms}\n🏨 *نوع الغرفة:* ${data.roomType}\n\n✨ برجاء تأكيد الإتاحة والسعر`;
 
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
